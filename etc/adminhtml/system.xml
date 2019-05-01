@@ -1,3 +1,17 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="mygento_content" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Content Import/Export</label>
+            <tab>mygento</tab>
+            <resource>Mygento_Content::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Setting</label>
+                <field id="export" translate="button_label" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <button_label>Export CMS Block</button_label>
+                    <frontend_model>Mygento\Content\Block\Adminhtml\System\Config\CmsBlockExport</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
 </config>
