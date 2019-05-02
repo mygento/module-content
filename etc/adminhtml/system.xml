@@ -8,11 +8,13 @@
             <group id="general" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General Setting</label>
                 <field id="export_cms_block" translate="button_label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <button_label>Export CMS Block</button_label>
+                    <label>Export CMS Blocks</label>
+                    <button_label>Dump to files</button_label>
                     <frontend_model>Mygento\Content\Block\Adminhtml\System\Config\CmsBlockExport</frontend_model>
                 </field>
                 <field id="export_cms_page" translate="button_label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <button_label>Export CMS Page</button_label>
+                    <label>Export CMS Pages</label>
+                    <button_label>Dump to files</button_label>
                     <frontend_model>Mygento\Content\Block\Adminhtml\System\Config\CmsPageExport</frontend_model>
                 </field>
             </group>
