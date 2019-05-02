@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author Mygento Team
+ * @copyright 2019 Mygento (https://www.mygento.ru)
+ * @package Mygento_Content
+ */
+
 namespace Mygento\Content\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -7,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ExportCmsPage extends AbstractExport
 {
-
     /**
      * @var \Magento\Cms\Api\PageRepositoryInterface
      */
@@ -17,8 +22,8 @@ class ExportCmsPage extends AbstractExport
         \Magento\Cms\Api\PageRepositoryInterface $repo,
         \Magento\Framework\Filesystem $fs,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
-        \Magento\Framework\Api\SearchCriteriaBuilder $builder)
-    {
+        \Magento\Framework\Api\SearchCriteriaBuilder $builder
+    ) {
         parent::__construct($fs, $directory, $builder);
         $this->repo = $repo;
     }
@@ -38,13 +43,12 @@ class ExportCmsPage extends AbstractExport
         $progress = new \Symfony\Component\Console\Helper\ProgressBar($output, $result->getTotalCount());
         $progress->setFormat('<comment>%message%</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%');
 
-        foreach ($result->getItems() as $item)
-        {
+        foreach ($result->getItems() as $item) {
             /** @var \Magento\Cms\Api\Data\PageInterface $item */
-            $progress->setMessage('page '.$item->getIdentifier());
-            
+            $progress->setMessage('page ' . $item->getIdentifier());
+
             $this->writeFile(
-                'page_'.$item->getIdentifier().'_'.$item->getStoreCode().'.txt',
+                'page_' . $item->getIdentifier() . '_' . $item->getStoreCode() . '.txt',
                 $item->getContent(),
                 'cms'
             );

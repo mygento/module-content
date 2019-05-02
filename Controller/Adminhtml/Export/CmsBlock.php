@@ -11,13 +11,11 @@ namespace Mygento\Content\Controller\Adminhtml\Export;
 class CmsBlock extends \Mygento\Content\Controller\Adminhtml\Export
 {
     /**
-     *
      * @var \Magento\Cms\Api\BlockRepositoryInterface
      */
     private $repo;
 
     /**
-     *
      * @param \Magento\Cms\Api\BlockRepositoryInterface $repo
      * @param \Magento\Framework\Controller\Result\JsonFactory $jsonResult
      * @param \Magento\Framework\Filesystem $fs
@@ -31,8 +29,8 @@ class CmsBlock extends \Mygento\Content\Controller\Adminhtml\Export
         \Magento\Framework\Filesystem $fs,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
         \Magento\Framework\Api\SearchCriteriaBuilder $builder,
-        \Magento\Backend\App\Action\Context $context)
-    {
+        \Magento\Backend\App\Action\Context $context
+    ) {
         parent::__construct($jsonResult, $fs, $directory, $builder, $context);
         $this->repo = $repo;
     }
@@ -43,18 +41,17 @@ class CmsBlock extends \Mygento\Content\Controller\Adminhtml\Export
 
         $result = $this->repo->getList($this->builder->create());
 
-        foreach ($result->getItems() as $item)
-        {
+        foreach ($result->getItems() as $item) {
             /** @var \Magento\Cms\Api\Data\BlockInterace $item */
             $this->writeFile(
-                'block_'.$item->getIdentifier().'_'.$item->getStoreCode().'.txt',
+                'block_' . $item->getIdentifier() . '_' . $item->getStoreCode() . '.txt',
                 $item->getContent(),
                 'cms'
             );
         }
 
         return $resultJson->setData([
-            'success' => true
+            'success' => true,
         ]);
     }
 }

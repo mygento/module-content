@@ -1,12 +1,17 @@
 <?php
 
+/**
+ * @author Mygento Team
+ * @copyright 2019 Mygento (https://www.mygento.ru)
+ * @package Mygento_Content
+ */
+
 namespace Mygento\Content\Console\Command;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 
 abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
 {
-
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
@@ -27,22 +32,22 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
         \Magento\Framework\Api\SearchCriteriaBuilder $builder
     ) {
-     $this->fs = $fs;
-     $this->directory = $directory;
-     $this->builder = $builder;
-     parent::__construct();
+        $this->fs = $fs;
+        $this->directory = $directory;
+        $this->builder = $builder;
+        parent::__construct();
     }
 
     protected function writeFile(string $name, string $content, $folder = null)
     {
-        $dir = 'content'.DIRECTORY_SEPARATOR;
+        $dir = 'content' . DIRECTORY_SEPARATOR;
         if ($folder) {
-            $dir .= $folder.DIRECTORY_SEPARATOR;
+            $dir .= $folder . DIRECTORY_SEPARATOR;
         }
         $writeAdapter = $this->fs->getDirectoryWrite(DirectoryList::VAR_DIR);
 
         try {
-            $writeAdapter->writeFile($dir.$name, $content);
+            $writeAdapter->writeFile($dir . $name, $content);
         } catch (Exception $e) {
             unset($e);
         }

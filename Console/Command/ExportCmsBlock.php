@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author Mygento Team
+ * @copyright 2019 Mygento (https://www.mygento.ru)
+ * @package Mygento_Content
+ */
+
 namespace Mygento\Content\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -7,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ExportCmsBlock extends AbstractExport
 {
-
     /**
      * @var \Magento\Cms\Api\BlockRepositoryInterface
      */
@@ -38,13 +43,12 @@ class ExportCmsBlock extends AbstractExport
         $progress = new \Symfony\Component\Console\Helper\ProgressBar($output, $result->getTotalCount());
         $progress->setFormat('<comment>%message%</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%');
 
-        foreach ($result->getItems() as $item)
-        {
+        foreach ($result->getItems() as $item) {
             /** @var \Magento\Cms\Api\Data\BlockInterace $item */
-            $progress->setMessage('block '.$item->getIdentifier());
-            
+            $progress->setMessage('block ' . $item->getIdentifier());
+
             $this->writeFile(
-                'block_'.$item->getIdentifier().'_'.$item->getStoreCode().'.txt',
+                'block_' . $item->getIdentifier() . '_' . $item->getStoreCode() . '.txt',
                 $item->getContent(),
                 'cms'
             );

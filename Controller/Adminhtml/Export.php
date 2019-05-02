@@ -12,7 +12,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 
 abstract class Export extends \Magento\Backend\App\Action
 {
-
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
@@ -34,7 +33,6 @@ abstract class Export extends \Magento\Backend\App\Action
     protected $jsonResult;
 
     /**
-     *
      * @param \Magento\Cms\Api\BlockRepositoryInterface $repo
      * @param \Magento\Framework\Controller\Result\JsonFactory $jsonResult
      * @param \Magento\Framework\Filesystem $fs
@@ -57,17 +55,16 @@ abstract class Export extends \Magento\Backend\App\Action
         $this->builder = $builder;
     }
 
-
     protected function writeFile(string $name, string $content, $folder = null)
     {
-        $dir = 'content'.DIRECTORY_SEPARATOR;
+        $dir = 'content' . DIRECTORY_SEPARATOR;
         if ($folder) {
-            $dir .= $folder.DIRECTORY_SEPARATOR;
+            $dir .= $folder . DIRECTORY_SEPARATOR;
         }
         $writeAdapter = $this->fs->getDirectoryWrite(DirectoryList::VAR_DIR);
 
         try {
-            $writeAdapter->writeFile($dir.$name, $content);
+            $writeAdapter->writeFile($dir . $name, $content);
         } catch (Exception $e) {
             unset($e);
         }

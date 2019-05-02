@@ -27,7 +27,7 @@
       "magento/module-cms": "103.*"
   },
   "require-dev": {
-      "mygento/coding-standard": "^2.13.3",
+      "mygento/coding-standard": "^2.13.5",
       "vimeo/psalm": "^3.0"
   },
   "autoload": {
