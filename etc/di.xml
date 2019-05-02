@@ -5,6 +5,8 @@
             <argument name="commands" xsi:type="array">
                 <item name="mygento_content_export_cmsblock" xsi:type="object">Mygento\Content\Console\Command\ExportCmsBlock</item>
                 <item name="mygento_content_export_cmspage" xsi:type="object">Mygento\Content\Console\Command\ExportCmsPage</item>
+                <item name="mygento_content_import_cmsblock" xsi:type="object">Mygento\Content\Console\Command\ImportCmsBlock</item>
+                <item name="mygento_content_import_cmspage" xsi:type="object">Mygento\Content\Console\Command\ImportCmsPage</item>
             </argument>
         </arguments>
     </type>

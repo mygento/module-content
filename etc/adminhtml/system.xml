@@ -17,6 +17,18 @@
                     <button_label>Dump to files</button_label>
                     <frontend_model>Mygento\Content\Block\Adminhtml\System\Config\CmsPageExport</frontend_model>
                 </field>
+
+                <field id="import_cms_block" translate="button_label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Import CMS Pages</label>
+                    <button_label>Load from files</button_label>
+                    <frontend_model>Mygento\Content\Block\Adminhtml\System\Config\CmsBlockImport</frontend_model>
+                </field>
+
+                <field id="import_cms_page" translate="button_label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Import CMS Pages</label>
+                    <button_label>Load from files</button_label>
+                    <frontend_model>Mygento\Content\Block\Adminhtml\System\Config\CmsPageImport</frontend_model>
+                </field>
             </group>
         </section>
     </system>
