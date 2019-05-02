@@ -18,6 +18,12 @@ class ExportCmsPage extends AbstractExport
      */
     private $repo;
 
+    /**
+     * @param \Magento\Cms\Api\PageRepositoryInterface $repo
+     * @param \Magento\Framework\Filesystem $fs
+     * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
+     */
     public function __construct(
         \Magento\Cms\Api\PageRepositoryInterface $repo,
         \Magento\Framework\Filesystem $fs,
@@ -28,6 +34,9 @@ class ExportCmsPage extends AbstractExport
         $this->repo = $repo;
     }
 
+    /**
+     * Configures the current command.
+     */
     protected function configure()
     {
         $this->setName('setup:content:export-cms-page')
@@ -35,6 +44,11 @@ class ExportCmsPage extends AbstractExport
         parent::configure();
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return type
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $result = $this->repo->getList($this->builder->create());

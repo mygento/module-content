@@ -27,6 +27,11 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
      */
     protected $fs;
 
+    /**
+     * @param \Magento\Framework\Filesystem $fs
+     * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
+     */
     public function __construct(
         \Magento\Framework\Filesystem $fs,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
@@ -38,6 +43,11 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
         parent::__construct();
     }
 
+    /**
+     * @param string $name
+     * @param string $content
+     * @param string|null $folder
+     */
     protected function writeFile(string $name, string $content, $folder = null)
     {
         $dir = 'content' . DIRECTORY_SEPARATOR;
@@ -48,7 +58,7 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
 
         try {
             $writeAdapter->writeFile($dir . $name, $content);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             unset($e);
         }
     }

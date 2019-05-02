@@ -35,6 +35,10 @@ class CmsPage extends \Mygento\Content\Controller\Adminhtml\Export
         $this->repo = $repo;
     }
 
+    /**
+     * Execute action based on request and return result
+     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     */
     public function execute()
     {
         $resultJson = $this->jsonResult->create();

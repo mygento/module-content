@@ -10,5 +10,8 @@ namespace Mygento\Content\Block\Adminhtml\System\Config;
 
 class CmsPageExport extends \Mygento\Base\Block\Adminhtml\System\Config\AjaxButton
 {
+    /**
+     * @var string
+     */
     protected $url = 'mygentocontent/export/cmspage';
 }

@@ -33,7 +33,6 @@ abstract class Export extends \Magento\Backend\App\Action
     protected $jsonResult;
 
     /**
-     * @param \Magento\Cms\Api\BlockRepositoryInterface $repo
      * @param \Magento\Framework\Controller\Result\JsonFactory $jsonResult
      * @param \Magento\Framework\Filesystem $fs
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
@@ -55,6 +54,11 @@ abstract class Export extends \Magento\Backend\App\Action
         $this->builder = $builder;
     }
 
+    /**
+     * @param string $name
+     * @param string $content
+     * @param string|null $folder
+     */
     protected function writeFile(string $name, string $content, $folder = null)
     {
         $dir = 'content' . DIRECTORY_SEPARATOR;
@@ -65,7 +69,7 @@ abstract class Export extends \Magento\Backend\App\Action
 
         try {
             $writeAdapter->writeFile($dir . $name, $content);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             unset($e);
         }
     }

@@ -18,6 +18,12 @@ class ExportCmsBlock extends AbstractExport
      */
     private $repo;
 
+    /**
+     * @param \Magento\Cms\Api\BlockRepositoryInterface $repo
+     * @param \Magento\Framework\Filesystem $fs
+     * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
+     */
     public function __construct(
         \Magento\Cms\Api\BlockRepositoryInterface $repo,
         \Magento\Framework\Filesystem $fs,
@@ -28,6 +34,9 @@ class ExportCmsBlock extends AbstractExport
         $this->repo = $repo;
     }
 
+    /**
+     * Configures the current command.
+     */
     protected function configure()
     {
         $this->setName('setup:content:export-cms-block')
@@ -35,6 +44,11 @@ class ExportCmsBlock extends AbstractExport
         parent::configure();
     }
 
+    /**
+     * @param Symfony\Component\Console\Input\InputInterface $input
+     * @param Symfony\Component\Console\Output\OutputInterface $output
+     * @return int|null
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $result = $this->repo->getList($this->builder->create());
