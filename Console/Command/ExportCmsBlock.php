@@ -8,6 +8,7 @@
 
 namespace Mygento\Content\Console\Command;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,17 +21,19 @@ class ExportCmsBlock extends AbstractExport
 
     /**
      * @param \Magento\Cms\Api\BlockRepositoryInterface $repo
+     * @param \Mygento\Content\Helper\Data $helper
      * @param \Magento\Framework\Filesystem $fs
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
      */
     public function __construct(
         \Magento\Cms\Api\BlockRepositoryInterface $repo,
+        \Mygento\Content\Helper\Data $helper,
         \Magento\Framework\Filesystem $fs,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
         \Magento\Framework\Api\SearchCriteriaBuilder $builder
     ) {
-        parent::__construct($fs, $directory, $builder);
+        parent::__construct($helper, $fs, $directory, $builder);
         $this->repo = $repo;
     }
 
@@ -40,7 +43,8 @@ class ExportCmsBlock extends AbstractExport
     protected function configure()
     {
         $this->setName('setup:content:export-cms-block')
-            ->setDescription('Export CMS Blocks to files');
+            ->setDescription('Export CMS Blocks to files')
+            ->setDefinition($this->getOptions());
         parent::configure();
     }
 
@@ -54,20 +58,29 @@ class ExportCmsBlock extends AbstractExport
         $result = $this->repo->getList($this->builder->create());
 
         $output->setDecorated(true);
-        $progress = new \Symfony\Component\Console\Helper\ProgressBar($output, $result->getTotalCount());
-        $progress->setFormat('<comment>%message%</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%');
+        $progress = new ProgressBar($output, $result->getTotalCount());
+        $progress->setFormat(
+            '<comment>Exporting block %message%</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%'
+        );
 
         foreach ($result->getItems() as $item) {
             /** @var \Magento\Cms\Api\Data\BlockInterace $item */
-            $progress->setMessage('block ' . $item->getIdentifier());
+            $progress->setMessage($item->getIdentifier());
 
-            $this->writeFile(
-                'block_' . $item->getIdentifier() . '_' . $item->getStoreCode() . '.txt',
-                $item->getContent(),
-                'cms'
-            );
+            try {
+                $this->writeFile(
+                    $this->getFile('block', $item),
+                    $this->helper->dumpContent('block', $item),
+                    'cms',
+                    $input->getOption(self::FORCE_RUN)
+                );
+            } catch (\Magento\Framework\Exception\FileSystemException $e) {
+                $output->writeln('');
+                $output->writeln('<error>' . $e->getMessage() . '</error>');
+            }
             $progress->advance();
         }
+        $output->writeln('');
 
         return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }

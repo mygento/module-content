@@ -18,15 +18,12 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
      */
     const FORCE_RUN = 'force';
 
+    const GLUE = '|';
+
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
     protected $builder;
-
-    /**
-     * @var \Magento\Framework\App\Filesystem\DirectoryList
-     */
-    protected $directory;
 
     /**
      * @var \Magento\Framework\Filesystem\Driver\File
@@ -34,13 +31,34 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
     protected $file;
 
     /**
+     * @var \Mygento\Content\Helper\Data
+     */
+    protected $helper;
+
+    /**
+     * @var \Magento\Framework\App\Filesystem\DirectoryList
+     */
+    private $directory;
+
+    /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     private $storeManager;
 
+    /**
+     * @var array
+     */
     private $stores = [];
 
+    /**
+     * @param \Mygento\Content\Helper\Data $helper
+     * @param DirectoryList $directory
+     * @param \Magento\Framework\Filesystem\Driver\File $file
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
     public function __construct(
+        \Mygento\Content\Helper\Data $helper,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
         \Magento\Framework\Filesystem\Driver\File $file,
         \Magento\Framework\Api\SearchCriteriaBuilder $builder,
@@ -53,6 +71,7 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
         $this->builder = $builder;
         $this->storeManager = $storeManager;
         $this->stores = [];
+        $this->helper = $helper;
     }
 
     /**
@@ -89,6 +108,10 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
         return $result;
     }
 
+    /**
+     * @param string $name
+     * @return int|null
+     */
     protected function getStoreId($name)
     {
         if (empty($this->stores)) {
@@ -101,6 +124,9 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
         return $this->stores[$name] ?: null;
     }
 
+    /**
+     * @return array
+     */
     protected function getOptions(): array
     {
         return [
@@ -111,5 +137,10 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
                 'Overwrite'
             ),
         ];
+    }
+
+    protected function splitName(string $file): array
+    {
+        return $this->helper->splitName(str_replace(' ', '/', $file));
     }
 }

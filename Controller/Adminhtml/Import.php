@@ -33,13 +33,20 @@ abstract class Import extends \Magento\Backend\App\Action
     protected $jsonResult;
 
     /**
+     * @var \Mygento\Content\Helper\Data
+     */
+    private $helper;
+
+    /**
+     * @param \Mygento\Content\Helper\Data $helper
      * @param \Magento\Framework\Controller\Result\JsonFactory $jsonResult
      * @param \Magento\Framework\Filesystem $fs
-     * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
+     * @param DirectoryList $directory
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
+        \Mygento\Content\Helper\Data $helper,
         \Magento\Framework\Controller\Result\JsonFactory $jsonResult,
         \Magento\Framework\Filesystem $fs,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
@@ -52,6 +59,7 @@ abstract class Import extends \Magento\Backend\App\Action
         $this->directory = $directory;
         $this->fs = $fs;
         $this->builder = $builder;
+        $this->helper = $helper;
     }
 
     /**

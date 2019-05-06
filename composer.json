@@ -24,7 +24,8 @@
   ],
   "require": {
       "mygento/module-base": "~2.3.2",
-      "magento/module-cms": "103.*"
+      "magento/module-cms": "103.*",
+       "mustangostang/spyc": "^0.6.2"
   },
   "require-dev": {
       "mygento/coding-standard": "^2.13.5",

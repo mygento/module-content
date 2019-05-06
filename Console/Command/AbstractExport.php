@@ -9,9 +9,15 @@
 namespace Mygento\Content\Console\Command;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Symfony\Component\Console\Input\InputOption;
 
 abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
 {
+    /**
+     * Force run of export
+     */
+    const FORCE_RUN = 'force';
+
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
@@ -23,16 +29,23 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
     protected $directory;
 
     /**
-     * @var \Magento\Framework\Filesystem
+     * @var \Mygento\Content\Helper\Data
      */
-    protected $fs;
+    protected $helper;
 
     /**
+     * @var \Magento\Framework\Filesystem
+     */
+    private $fs;
+
+    /**
+     * @param \Mygento\Content\Helper\Data $helper
      * @param \Magento\Framework\Filesystem $fs
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
      */
     public function __construct(
+        \Mygento\Content\Helper\Data $helper,
         \Magento\Framework\Filesystem $fs,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
         \Magento\Framework\Api\SearchCriteriaBuilder $builder
@@ -40,6 +53,8 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
         $this->fs = $fs;
         $this->directory = $directory;
         $this->builder = $builder;
+        $this->helper = $helper;
+
         parent::__construct();
     }
 
@@ -47,8 +62,10 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
      * @param string $name
      * @param string $content
      * @param string|null $folder
+     * @param mixed $force
+     * @throws \Magento\Framework\Exception\FileSystemException
      */
-    protected function writeFile(string $name, string $content, $folder = null)
+    protected function writeFile(string $name, string $content, $folder = null, $force = false)
     {
         $dir = 'content' . DIRECTORY_SEPARATOR;
         if ($folder) {
@@ -56,10 +73,33 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
         }
         $writeAdapter = $this->fs->getDirectoryWrite(DirectoryList::VAR_DIR);
 
-        try {
-            $writeAdapter->writeFile($dir . $name, $content);
-        } catch (\Exception $e) {
-            unset($e);
+        if ($writeAdapter->isExist($dir . $name) && !$force) {
+            throw new \Magento\Framework\Exception\FileSystemException(__('File already exists %1', $dir . $name));
         }
+        $writeAdapter->writeFile($dir . $name, $content);
+    }
+
+    protected function getFile(string $entity, $item)
+    {
+        return $this->helper->createFilename(
+            $entity,
+            $item->getIdentifier(),
+            $item->getStoreCode()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptions(): array
+    {
+        return [
+            new InputOption(
+                self::FORCE_RUN,
+                '-f',
+                InputOption::VALUE_NONE,
+                'Overwrite'
+            ),
+        ];
     }
 }

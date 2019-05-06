@@ -8,6 +8,7 @@
 
 namespace Mygento\Content\Console\Command;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,15 +24,25 @@ class ImportCmsBlock extends AbstractImport
      */
     private $repo;
 
+    /**
+     * @param \Magento\Cms\Api\BlockRepositoryInterface $repo
+     * @param \Magento\Cms\Api\Data\BlockInterfaceFactory $entityFactory
+     * @param \Mygento\Content\Helper\Data $helper
+     * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
+     * @param \Magento\Framework\Filesystem\Driver\File $file
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
     public function __construct(
         \Magento\Cms\Api\BlockRepositoryInterface $repo,
         \Magento\Cms\Api\Data\BlockInterfaceFactory $entityFactory,
+        \Mygento\Content\Helper\Data $helper,
         \Magento\Framework\App\Filesystem\DirectoryList $directory,
         \Magento\Framework\Filesystem\Driver\File $file,
         \Magento\Framework\Api\SearchCriteriaBuilder $builder,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
-        parent::__construct($directory, $file, $builder, $storeManager);
+        parent::__construct($helper, $directory, $file, $builder, $storeManager);
 
         $this->repo = $repo;
         $this->entityFactory = $entityFactory;
@@ -56,16 +67,17 @@ class ImportCmsBlock extends AbstractImport
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->setDecorated(true);
-        $files = $this->getFiles('cms', 'block_');
+        $files = $this->getFiles('cms', 'block|');
 
-        $progress = new \Symfony\Component\Console\Helper\ProgressBar($output, count($files));
-        $progress->setFormat('<comment>%message%</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%');
+        $progress = new ProgressBar($output, count($files));
+        $progress->setFormat(
+            '<comment>Importing block %message%</comment> %current%/%max% [%bar%] %percent:3s%% %elapsed%'
+        );
 
         foreach ($files as $file) {
-            $name = basename($file, '.txt');
-            echo $name . PHP_EOL;
-            $progress->setMessage('block ' . $name);
-            $data = explode('_', $name);
+            $name = basename($file, '.yaml');
+            $progress->setMessage($name);
+            $data = $this->splitName($name);
             if (count($data) !== 3) {
                 $progress->advance();
                 continue;
@@ -84,7 +96,14 @@ class ImportCmsBlock extends AbstractImport
 
             if ($result->getTotalCount() > 0) {
                 if ($input->getOption(self::FORCE_RUN)) {
+                    $output->writeln('');
+                    $output->writeln('<info>' . __('Overwrite %1', $name) . '</info>');
                     $this->updateEntity($result->getItems(), $file);
+                } else {
+                    $output->writeln('');
+                    $output->writeln(
+                        '<info>' . __('Skip %1, Block exists', $name) . '</info>'
+                    );
                 }
 
                 $progress->advance();
@@ -93,16 +112,21 @@ class ImportCmsBlock extends AbstractImport
             $this->createEntity($file, $id, $store);
             $progress->advance();
         }
+        $output->writeln('');
 
         return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 
     private function updateEntity(array $result, $file)
     {
-        $content = $this->file->fileGetContents($file);
+        $data = \Spyc::YAMLLoad($file);
         foreach ($result as $entity) {
             try {
-                $entity->setContent($content);
+                $this->helper->fillEntity(
+                    'page',
+                    $data,
+                    $entity
+                );
                 $this->repo->save($entity);
                 break;
             } catch (\Exception $e) {
@@ -116,12 +140,12 @@ class ImportCmsBlock extends AbstractImport
     {
         try {
             $entity = $this->entityFactory->create();
-            $content = $this->file->fileGetContents($file);
-            $entity->setContent($content);
-            $entity->setStoreId($storeId);
-            $entity->setTitle($id);
-            $entity->setIsActive(true);
-            $entity->setIdentifier($id);
+            $data = \Spyc::YAMLLoad($file);
+            $this->helper->fillEntity(
+                'block',
+                array_merge($data, ['store' => $storeId, 'identity' => $id]),
+                $entity
+            );
             $this->repo->save($entity);
         } catch (\Exception $e) {
             echo $e->getMessage();
