@@ -12,6 +12,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const GLUE = '|';
 
+    /**
+     * @param string $entity
+     * @param string $identity
+     * @param string $store
+     * @return string
+     */
     public function createFilename(
         string $entity,
         string $identity,
@@ -29,11 +35,20 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $entity . self::GLUE . str_replace('/', ' ', $identity) . self::GLUE . '' . $store . $ext;
     }
 
+    /**
+     * @param string $file
+     * @return array
+     */
     public function splitName(string $file): array
     {
         return explode(self::GLUE, $file);
     }
 
+    /**
+     * @param string $entity
+     * @param mixed $item
+     * @return string
+     */
     public function dumpContent(string $entity, $item)
     {
         $content = '';
@@ -65,6 +80,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $content;
     }
 
+    /**
+     * @param string $entityType
+     * @param array $data
+     * @param mixed $entity
+     * @return mixed
+     */
     public function fillEntity(string $entityType, array $data, $entity)
     {
         switch ($entityType) {

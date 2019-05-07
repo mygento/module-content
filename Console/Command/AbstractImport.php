@@ -121,7 +121,7 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
             }
         }
 
-        return $this->stores[$name] ?: null;
+        return $this->stores[$name] ?? null;
     }
 
     /**
@@ -139,6 +139,10 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
         ];
     }
 
+    /**
+     * @param string $file
+     * @return array
+     */
     protected function splitName(string $file): array
     {
         return $this->helper->splitName(str_replace(' ', '/', $file));

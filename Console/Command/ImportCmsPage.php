@@ -12,6 +12,9 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class ImportCmsPage extends AbstractImport
 {
     /**
@@ -75,7 +78,7 @@ class ImportCmsPage extends AbstractImport
         );
 
         foreach ($files as $file) {
-            $name = basename($file, '.yaml');
+            $name = pathinfo($file)['filename'];
             $progress->setMessage('block ' . $name);
             $data = $this->splitName($name);
             if (count($data) !== 3) {
@@ -96,7 +99,14 @@ class ImportCmsPage extends AbstractImport
 
             if ($result->getTotalCount() > 0) {
                 if ($input->getOption(self::FORCE_RUN)) {
+                    $output->writeln('');
+                    $output->writeln('<info>' . __('Overwrite %1', $name) . '</info>');
                     $this->updateEntity($result->getItems(), $file);
+                } else {
+                    $output->writeln('');
+                    $output->writeln(
+                        '<info>' . __('Skip %1, Page exists', $name) . '</info>'
+                    );
                 }
 
                 $progress->advance();
@@ -111,6 +121,10 @@ class ImportCmsPage extends AbstractImport
         return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 
+    /**
+     * @param array $result
+     * @param string $file
+     */
     private function updateEntity(array $result, $file)
     {
         $data = \Spyc::YAMLLoad($file);
@@ -131,6 +145,11 @@ class ImportCmsPage extends AbstractImport
         }
     }
 
+    /**
+     * @param string $file
+     * @param string $id
+     * @param string $storeId
+     */
     private function createEntity($file, $id, $storeId)
     {
         try {

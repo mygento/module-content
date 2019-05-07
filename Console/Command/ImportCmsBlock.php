@@ -12,6 +12,9 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class ImportCmsBlock extends AbstractImport
 {
     /**
@@ -75,7 +78,7 @@ class ImportCmsBlock extends AbstractImport
         );
 
         foreach ($files as $file) {
-            $name = basename($file, '.yaml');
+            $name = pathinfo($file)['filename'];
             $progress->setMessage($name);
             $data = $this->splitName($name);
             if (count($data) !== 3) {
@@ -117,6 +120,10 @@ class ImportCmsBlock extends AbstractImport
         return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 
+    /**
+     * @param array $result
+     * @param string $file
+     */
     private function updateEntity(array $result, $file)
     {
         $data = \Spyc::YAMLLoad($file);
@@ -136,6 +143,11 @@ class ImportCmsBlock extends AbstractImport
         }
     }
 
+    /**
+     * @param string $file
+     * @param string $id
+     * @param string $storeId
+     */
     private function createEntity($file, $id, $storeId)
     {
         try {

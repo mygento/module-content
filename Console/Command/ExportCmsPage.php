@@ -21,6 +21,7 @@ class ExportCmsPage extends AbstractExport
 
     /**
      * @param \Magento\Cms\Api\PageRepositoryInterface $repo
+     * @param \Mygento\Content\Helper\Data $helper
      * @param \Magento\Framework\Filesystem $fs
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directory
      * @param \Magento\Framework\Api\SearchCriteriaBuilder $builder

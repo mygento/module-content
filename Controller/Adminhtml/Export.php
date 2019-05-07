@@ -82,6 +82,11 @@ abstract class Export extends \Magento\Backend\App\Action
         }
     }
 
+    /**
+     * @param string $entity
+     * @param type $item
+     * @return string
+     */
     protected function getFile(string $entity, $item)
     {
         return $this->helper->createFilename(

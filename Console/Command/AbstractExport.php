@@ -79,6 +79,11 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
         $writeAdapter->writeFile($dir . $name, $content);
     }
 
+    /**
+     * @param string $entity
+     * @param mixed $item
+     * @return string
+     */
     protected function getFile(string $entity, $item)
     {
         return $this->helper->createFilename(
