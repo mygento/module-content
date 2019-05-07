@@ -86,6 +86,12 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
      */
     protected function getFile(string $entity, $item)
     {
+        if (!$item->getStoreCode()) {
+            throw new \Magento\Framework\Exception\FileSystemException(
+                __('Block %1 does not have store', $item->getIdentifier())
+            );
+        }
+
         return $this->helper->createFilename(
             $entity,
             $item->getIdentifier(),
