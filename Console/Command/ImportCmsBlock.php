@@ -130,7 +130,7 @@ class ImportCmsBlock extends AbstractImport
         foreach ($result as $entity) {
             try {
                 $this->helper->fillEntity(
-                    'page',
+                    'block',
                     $data,
                     $entity
                 );
