@@ -55,7 +55,18 @@ class ExportCmsBlock extends AbstractExport
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $result = $this->repo->getList($this->builder->create());
+        $ids = $input->getOption(self::IDENTIFIER);
+        if (is_array($ids) && count($ids) > 0) {
+            $this->builder->addFilter(self::IDENTIFIER, $ids, 'in');
+        }
+
+        $stores = $input->getOption(self::STORE);
+        if (is_array($stores) && count($stores) > 0) {
+            $this->builder->addFilter(self::STORE, $stores, 'in');
+        }
+
+        $criteria = $this->builder->create();
+        $result = $this->repo->getList($criteria);
 
         $output->setDecorated(true);
         $progress = new ProgressBar($output, $result->getTotalCount());

@@ -18,6 +18,10 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
      */
     const FORCE_RUN = 'force';
 
+    const IDENTIFIER = 'identifier';
+
+    const STORE = 'store_id';
+
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
@@ -110,6 +114,20 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
                 '-f',
                 InputOption::VALUE_NONE,
                 'Overwrite'
+            ),
+            new InputOption(
+                self::IDENTIFIER,
+                '-i',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+                'List of Identifiers',
+                []
+            ),
+            new InputOption(
+                self::STORE,
+                '-s',
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
+                'List of Stores',
+                []
             ),
         ];
     }
