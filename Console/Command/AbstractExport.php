@@ -99,7 +99,8 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
         return $this->helper->createFilename(
             $entity,
             $item->getIdentifier(),
-            $item->getStoreCode()
+            $item->getStoreCode(),
+            $item->getId()
         );
     }
 

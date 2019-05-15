@@ -92,7 +92,8 @@ abstract class Export extends \Magento\Backend\App\Action
         return $this->helper->createFilename(
             $entity,
             $item->getIdentifier(),
-            $item->getStoreCode()
+            $item->getStoreCode(),
+            $item->getId()
         );
     }
 }

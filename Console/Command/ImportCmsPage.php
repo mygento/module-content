@@ -81,7 +81,7 @@ class ImportCmsPage extends AbstractImport
             $name = pathinfo($file)['filename'];
             $progress->setMessage('block ' . $name);
             $data = $this->splitName($name);
-            if (count($data) !== 3) {
+            if (count($data) < 3 || count($data) > 4) {
                 $progress->advance();
                 continue;
             }

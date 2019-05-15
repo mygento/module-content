@@ -16,12 +16,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $entity
      * @param string $identity
      * @param string $store
+     * @param int|null $id
      * @return string
      */
     public function createFilename(
         string $entity,
         string $identity,
-        string $store
+        string $store,
+        $id = null
     ): string {
         switch ($entity) {
             case 'page':
@@ -30,6 +32,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 break;
             default:
                 $ext = '.txt';
+        }
+
+        if ($id) {
+            $ext = self::GLUE . $id . $ext;
         }
 
         return $entity . self::GLUE . str_replace('/', ' ', $identity) . self::GLUE . '' . $store . $ext;
