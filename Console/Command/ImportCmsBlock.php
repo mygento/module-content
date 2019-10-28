@@ -57,7 +57,7 @@ class ImportCmsBlock extends AbstractImport
     protected function configure()
     {
         $this->setName('setup:content:import-cms-block')
-            ->setDescription('Import CMS Blocks to files')
+            ->setDescription('Import CMS Blocks from files')
             ->setDefinition($this->getOptions());
         parent::configure();
     }

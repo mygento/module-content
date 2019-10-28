@@ -57,7 +57,7 @@ class ImportCmsPage extends AbstractImport
     protected function configure()
     {
         $this->setName('setup:content:import-cms-page')
-            ->setDescription('Import CMS Pages to files')
+            ->setDescription('Import CMS Pages from files')
             ->setDefinition($this->getOptions());
         parent::configure();
     }
