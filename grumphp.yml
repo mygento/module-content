@@ -10,7 +10,7 @@ parameters:
                 - "var_dump("
                 - "exit;"
         phplint:
-        phpcsfixer2:
+        phpcsfixer:
             config: '.php_cs'
         phpmd:
             ruleset: ['vendor/mygento/coding-standard/Mygento-Mage2/phpmd.xml']
