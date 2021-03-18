@@ -31,6 +31,8 @@
     "mygento/coding-standard": "~2.14.0-beta3",
     "vimeo/psalm": "^3.0"
   },
+  "minimum-stability": "RC",
+  "prefer-stable": true,
   "autoload": {
     "files": [
       "registration.php"
