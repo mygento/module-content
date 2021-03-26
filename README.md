@@ -8,4 +8,4 @@
 * Include the repository: `composer require mygento/module-content`
 
 ## Compability
-The module is tested on magento version 2.3.x
+The module is tested on magento version 2.4.x

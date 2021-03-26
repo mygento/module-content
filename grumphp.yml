@@ -1,4 +1,4 @@
-parameters:
+grumphp:
     git_dir: .
     bin_dir: vendor/bin
     tasks:
@@ -10,11 +10,14 @@ parameters:
                 - "var_dump("
                 - "exit;"
         phplint:
-        phpcsfixer2:
+        phpcsfixer:
             config: '.php_cs'
         phpmd:
             ruleset: ['vendor/mygento/coding-standard/Mygento-Mage2/phpmd.xml']
         phpcs:
             warning_severity: null
         xmllint:
-        #psalm:
+        phpstan:
+            autoload_file: 'vendor/mygento/coding-standard/stan/autoload.php'
+            ignore_patterns: [ 'Test' ]
+            level: 1
