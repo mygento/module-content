@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2019 Mygento (https://www.mygento.ru)
+ * @copyright 2019-2022 Mygento (https://www.mygento.ru)
  * @package Mygento_Content
  */
 
@@ -16,9 +16,9 @@ abstract class AbstractImport extends \Symfony\Component\Console\Command\Command
     /**
      * Force run of import
      */
-    const FORCE_RUN = 'force';
+    public const FORCE_RUN = 'force';
 
-    const GLUE = '|';
+    public const GLUE = '|';
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
