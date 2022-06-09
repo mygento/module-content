@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2019 Mygento (https://www.mygento.ru)
+ * @copyright 2019-2022 Mygento (https://www.mygento.ru)
  * @package Mygento_Content
  */
 
@@ -10,7 +10,7 @@ namespace Mygento\Content\Helper;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const GLUE = '|';
+    public const GLUE = '|';
 
     /**
      * @param string $entity

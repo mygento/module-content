@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2019 Mygento (https://www.mygento.ru)
+ * @copyright 2019-2022 Mygento (https://www.mygento.ru)
  * @package Mygento_Content
  */
 
@@ -16,11 +16,10 @@ abstract class AbstractExport extends \Symfony\Component\Console\Command\Command
     /**
      * Force run of export
      */
-    const FORCE_RUN = 'force';
+    public const FORCE_RUN = 'force';
 
-    const IDENTIFIER = 'identifier';
-
-    const STORE = 'store_id';
+    public const IDENTIFIER = 'identifier';
+    public const STORE = 'store_id';
 
     /**
      * @var \Magento\Framework\Api\SearchCriteriaBuilder
